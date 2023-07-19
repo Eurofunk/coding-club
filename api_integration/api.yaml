@@ -1,0 +1,237 @@
+openapi: 3.0.3
+info:
+  title: Command Centers
+  description: |-
+    API for managing command centers.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+tags:
+  - name: centers
+    description: Data about command centers
+paths:
+  /centers:
+    get:
+      tags:
+        - centers
+      operationId: getCenters
+      summary: List available command centers
+      description: List available command centers with sorting and pagination
+      # TODO: add parameters, responses and response headers
+    post:
+      tags:
+        - centers
+      summary: Add a new command center
+      description: Add a new command center
+      operationId: addCenter
+      parameters:
+        - $ref: '#/components/parameters/apiKey'
+      requestBody:
+        description: Create a new command center
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BaseCenter'
+            example:
+              name: test center
+              staff: 2
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Center'
+              example:
+                id: my-id
+                name: my center
+                staff: 2
+        '401':
+          $ref: '#/components/responses/unauthorized'
+  /searchCenters:
+    get:
+      tags:
+        - centers
+      summary: Finds command centers by name
+      description: Provides search as you type functionality.
+      operationId: findCenterByName
+      parameters:
+        - name: name
+          in: query
+          description: Command center name to search for
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Center'
+              example:
+                - id: id-2
+                  name: test center
+                  staff: 3
+        '401':
+          $ref: '#/components/responses/unauthorized'
+  /centers/{id}:
+    get:
+      tags:
+        - centers
+      summary: Find command center by ID
+      description: Returns a single command center
+      operationId: getCenterById
+      parameters:
+        - $ref: '#/components/parameters/apiKey'
+        - name: id
+          in: path
+          description: ID of command center to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Center'
+              example:
+                id: id-1
+                name: Center 1
+                staff: 3
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          description: Command center not found
+    patch:
+      tags:
+        - centers
+      summary: Updates a command center
+      description: Performs a partial update of a command center
+      operationId: partialUpdateCenter
+      parameters:
+        - $ref: '#/components/parameters/apiKey'
+        - name: id
+          in: path
+          description: Command center id to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Center'
+              example:
+                id: id-1
+                name: Center 1
+                staff: 2
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          description: Command center not found
+    put:
+      tags:
+        - centers
+      summary: Updates a command center
+      description: Performs a full update of a command center
+      operationId: updateCenter
+      parameters:
+        - $ref: '#/components/parameters/apiKey'
+        - name: id
+          in: path
+          description: Command center id to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Center'
+              example:
+                id: id-1
+                name: Center 1
+                staff: 3
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          description: Command center not found
+    delete:
+      tags:
+        - centers
+      summary: Deletes a command center
+      description: delete a command center
+      operationId: deleteCenter
+      parameters:
+        - $ref: '#/components/parameters/apiKey'
+        - name: id
+          in: path
+          description: Command center id to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          description: Command center not found
+components:
+  parameters:
+    apiKey:
+      name: X-API-Key
+      in: header
+      required: true
+      schema:
+        type: string
+  responses:
+    unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: unauthorized
+            message: API key required
+  schemas:
+    BaseCenter:
+      type: object
+      properties:
+        name:
+          type: string
+        staff:
+          type: number
+      required:
+        - name
+    Center:
+      allOf:
+        - $ref: '#/components/schemas/BaseCenter'
+        - type: object
+          properties:
+            id:
+              type: string
+          required:
+            - id
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message

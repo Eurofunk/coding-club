@@ -1,0 +1,196 @@
+{
+  "uuid": "e58b6150-598b-46f8-95c1-f40e45301abb",
+  "lastMigration": 27,
+  "name": "Command Centers",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 3001,
+  "hostname": "",
+  "folders": [],
+  "routes": [
+    {
+      "uuid": "1ca6c903-0a73-4cfb-8ed3-23f0985d5fda",
+      "type": "crud",
+      "documentation": "",
+      "method": "",
+      "endpoint": "centers",
+      "responses": [
+        {
+          "uuid": "3266391a-acba-4de1-adf2-920ee01d9dc5",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [
+            {
+              "key": "Access-Control-Expose-Headers",
+              "value": "X-Total-Count"
+            }
+          ],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "502e",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "77c15fae-1d0b-426c-9a46-bf30206ef6d4",
+          "body": "{\n  \"code\": \"unauthorized\",\n  \"message\": \"API key required\"\n}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "X-API-Key",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "e3cbe0f2-fa0d-4b1b-8a44-e22fff0fb1b3",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "searchCenters",
+      "responses": [
+        {
+          "uuid": "d72aa3d0-f390-4939-8185-e17de980c429",
+          "body": "{{setVar 'addComma' false }} \r\n[ \r\n  {{#each (dataRaw 'centers' )}} \r\n    {{#if ( includes  this.name   (queryParam 'name'))}}\r\n      {{#if @addComma}},{{/if}}\r\n      {{data 'centers' (concat '' @index)}}\r\n      {{setVar 'addComma' true }}\r\n    {{/if}}\r\n  {{/each}}\r\n]",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "d7ed3723-e8a1-4aef-9527-8e9e127d2d1c",
+          "body": "{\n  \"code\": \"unauthorized\",\n  \"message\": \"API key required\"\n}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "X-API-Key",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "1ca6c903-0a73-4cfb-8ed3-23f0985d5fda"
+    },
+    {
+      "type": "route",
+      "uuid": "e3cbe0f2-fa0d-4b1b-8a44-e22fff0fb1b3"
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Access-Control-Allow-Origin",
+      "value": "*"
+    },
+    {
+      "key": "Access-Control-Allow-Methods",
+      "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+    },
+    {
+      "key": "Access-Control-Allow-Headers",
+      "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With, X-Api-Key"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "data": [
+    {
+      "uuid": "4a5d085e-6981-4517-bbab-791e530dbde1",
+      "id": "502e",
+      "name": "centers",
+      "documentation": "A list of command centers",
+      "value": "[\n  {\n    \"id\": \"{{guid}}\",\n    \"name\": \"Landesalarm- und Warnzentrale\",\n    \"staff\": 2\n  },\n  {\n    \"id\": \"{{guid}}\",\n    \"name\": \"Rotes Kreuz Landesleitstelle\",\n    \"staff\": 3\n  },\n  {\n    \"id\": \"{{guid}}\",\n    \"name\": \"Leitstelle Feuerwehr Villach\",\n    \"staff\": 2\n  },\n    {\n    \"id\": \"{{guid}}\",\n    \"name\": \"Leitstelle Berufsfeuerwehr Klagenfurt\",\n    \"staff\": 2\n  },\n  {\n    \"id\": \"{{guid}}\",\n    \"name\": \"Landespolizeidirektion Kärnten\",\n    \"staff\": 4\n  },\n  {\n    \"id\": \"{{guid}}\",\n    \"name\": \"ÖBB Technische Leitstelle Villach\",\n    \"staff\": 5\n  }\n]"
+    }
+  ]
+}

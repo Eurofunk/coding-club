@@ -1,0 +1,23 @@
+<div mat-dialog-title>
+    <h1>Command Center</h1>
+</div>
+<form [formGroup]="form" (ngSubmit)="onFormSubmit()">
+    <div mat-dialog-content class="content">
+        <div class="row">
+            <mat-form-field appearance="outline">
+                <mat-label>Name</mat-label>
+                <input matInput type="text" placeholder="Command center name" formControlName="name">
+            </mat-form-field>
+        </div>
+        <div class="row">
+            <mat-form-field appearance="outline">
+                <mat-label>Staff</mat-label>
+                <input matInput type="text" placeholder="Command center staffing" formControlName="staff">
+            </mat-form-field>
+        </div>
+    </div>
+    <div mat-dialog-actions class="action">
+        <button mat-raised-button type="button" [mat-dialog-close]="false">Cancel</button>
+        <button mat-raised-button color="primary" type="submit">{{data ? 'Update': 'Save'}}</button>
+    </div>
+</form>
