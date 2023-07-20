@@ -3,6 +3,8 @@ info:
   title: Command Centers
   description: |-
     API for managing command centers.
+    This API needs an API key for access. Get the API key at [some website].
+    The API key needs to be send via the `X-Api-Key` header for every request.
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
